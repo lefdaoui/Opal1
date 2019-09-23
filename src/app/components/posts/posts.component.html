@@ -1,0 +1,197 @@
+
+
+<a href="posts"   class="   ">
+    <p id="page_title" >
+        <span id="span_bvn">bienvenue <span id="span_username">{{ current_user_username }}</span> </span>   Liste Articles
+       </p>
+</a>
+
+
+
+<div class="container" *ngIf="!id_post" style="padding-top: 5vw;">
+   <div class="row" id="container_posts">
+
+       <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let post of (posts$ | async).list; index as i">
+           <input type="hidden" name="postId"  value="{{post.id}}">
+           <input type="hidden" name="userId"  value="{{post.userId}}">
+           <h1>{{ post.title  }}</h1>
+           <p>{{ post.body  }}</p>
+           <p class="text-center align-items-end"><a href="posts/{{post.id}}"   class="btn btn-success align-items-end">consulter &raquo;</a></p>
+
+       </div>
+
+   </div>
+</div>
+
+
+
+<div class="container" *ngIf="id_post" style="padding-top: 5vw;">
+   <div class="row" id="container_posts" style="padding: 1vw;">
+
+       <div class="col-md-8 col-lg-8 col-xl8 mr-auto"    style="margin: auto;" >
+           <input type="hidden" name="postId"  value="{{ (posts$ | async).list.id }}">
+           <input type="hidden" name="userId"  value="{{ (posts$ | async).list.userId }}">
+           <h1>{{ (posts$ | async).list.title }}</h1>
+           <p style="min-height: 13vw;">{{ (posts$ | async).list.body }}</p>
+         </div>
+
+       <div class="col-md-6 col-lg-8 col-xl-8 mr-auto"    style="margin: auto;" >
+
+           <div class="col-md-12 col-lg-12 col-xl-12 comment_block" *ngFor="let comment of (comments$ | async).list; index as i">
+               <input type="hidden" name="commentId"  value="{{comment.id}}">
+               <input type="hidden" name="comment_postId"  value="{{comment.userId}}">
+               <p class="comment_name">{{ comment.name  }}</p>
+               <p class="comment_body">{{ comment.body  }}</p>
+               <p class="comment_email"><strong>Par </strong>{{ comment.email  }}</p>
+           </div>
+
+
+
+           <div *ngIf="current_user_token" id="blocComment" class="col-md-12 col-lg-12 col-xl12 text-center  align-items-end" id="div_add_comment">
+               <textarea class="col-md-10 col-lg-10 col-xl10" type="area" noresize id="commentTxt"  placeholder="Tapez votre commentaire ici ...">
+                  Tapez votre commentaire ici ...
+              </textarea>
+
+               <button class="col-md-10 col-lg-10 col-xl10"  type="button" class="btn btn-success" (click)="storeComment()">
+                 valider
+               </button>
+           </div>
+
+
+
+
+           <div *ngIf="!current_user_token" id="blocRelog" class="col-md-12 col-lg-12 col-xl12 text-center  align-items-end" id="div_add_comment">
+
+
+                    <div  ngNativeValidate>
+                      <div class="form-group">
+                        <label for="emailTxt">Email</label>
+                        <input  #email
+                          name="email"
+                          type="email"
+                          required
+                          class="form-control"
+                          id="emailTxt"
+                          placeholder="enterez votre email">
+                      <button type="submit"  (click)="backLog(email.value)" class="btn btn-primary">se connecter</button>
+                      <a [routerLink]="['/']" class="btn btn-success">Cancel</a>
+                    </div>
+
+            </div>
+
+
+
+          </div>
+
+        </div>
+      </div>
+<style>
+ h1{
+   display: block;
+   width: 86%;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+   margin: auto;
+   margin-bottom: 1%;
+   margin-top: 1%;
+   text-align: center;
+ }
+ #container_posts {
+   width: 100%;
+   overflow: auto;
+ }
+ #container_posts div{
+   background: #F5F5F5;
+   cursor: pointer;
+   width: 100%;    overflow: auto;    border: 1px solid #e8e8e873;
+ }
+ #container_posts div:hover{
+   background:  #edf2f3;;
+ }
+ #container_posts h2{
+   height:1em ;
+   overflow:hidden;
+   text-align: center;
+ }
+
+.comment_block{
+   border: none !important;
+   margin-top: 0.4vw;
+   background: #e2e2e2 !important;
+}
+
+
+.comment_name{
+               text-align: center;
+   font-weight: 600;
+   font-size: 111%;
+   width: 50%;
+   margin: auto;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+   border-bottom: 1px solid;
+   margin-bottom: 0.3vw;
+   background: #dadada;
+}
+
+.comment_email{
+                text-align: center;    text-decoration: underline; text-align: right;
+}
+.comment_body {
+                text-align: center;
+                margin-top: 1vw;
+}
+
+#div_add_comment{
+  background: #c3c3c3 !important;
+    display: flex;
+    padding: 1vw;
+    margin-top: 0.4vw;
+}
+
+#div_add_comment area
+{
+width: 50%;
+resize: none;
+}
+#commentTxt{
+width: 50%;
+resize: none;
+
+}
+#div_add_comment button
+{
+margin-left: 1vw;
+}
+#page_title{
+width: 100%;
+    background: #8a8a8a;
+    min-height: 4vw;
+    text-align: center;
+    font-size: 150%;
+    color: white;
+    position: fixed;
+    z-index: 100;
+}
+
+
+
+#span_bvn{
+  float: left;
+    font-size: 70%;
+    padding-left: 0.5vw;
+    padding-top: 0.45vw;
+    position: absolute;
+    left: 1vw;
+}
+#span_username{
+    font-size: 110%;
+    font-weight: 600;
+}
+form {
+width: 100%;
+}
+
+</style>
